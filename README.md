@@ -1,4 +1,4 @@
-# Invero
+# Invero 
 
 Invero 是一款适用于 Bukkit 平台的灵活、多功能 GUI 菜单插件
 
