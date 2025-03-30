@@ -23,11 +23,15 @@ fun ItemMeta.writeDisplayName(raw: String): ItemMeta {
         val component: Component = Message.parseAdventure(raw)
         try {
             // Paper Method
-            // void displayName(final net.kyori.adventure.text.@Nullable Component displayName)
             this.invokeMethod<Any>("displayName", component)
         } catch (ex: NoSuchMethodException) {
-            // private IChatBaseComponent displayName;
-            this.setProperty("displayName", component.toMinecraft())
+            // Ensure compatibility with the expected type of "displayName"
+            val minecraftComponent = component.toMinecraft()
+            if (minecraftComponent is net.minecraft.network.chat.IChatBaseComponent) {
+                this.setProperty("displayName", minecraftComponent)
+            } else {
+                throw IllegalArgumentException("Incompatible type for displayName: ${minecraftComponent::class.java}")
+            }
         }
     } else this.setDisplayName(raw) // 低版本就不处理了
     return this
@@ -46,7 +50,9 @@ fun ItemMeta.writeLore(raw: List<String>): ItemMeta {
             this.invokeMethod<Any>("lore", components)
         } catch (ex: NoSuchMethodException) {
             // private List<IChatBaseComponent> lore;
-            this.setProperty("lore", components.map { it.toMinecraft() })
+            // 使用toMinecraft()方法返回的对象列表，不进行类型转换
+            val minecraftComponents = components.map { it.toMinecraft() }
+            this.setProperty("lore", minecraftComponents)
         }
     } else this.lore = raw // 低版本就不处理了
     return this
