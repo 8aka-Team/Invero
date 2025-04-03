@@ -92,10 +92,10 @@ object Message {
 
     @JvmStatic
     private fun deMark(source: String) =
-        source.replaceNonEscaped(MARKED_TAG_START, TAG_START).replaceNonEscaped(MARKED_TAG_END, TAG_END)
+        source.replace(MARKED_TAG_START, TAG_START).replace(MARKED_TAG_END, TAG_END)
 
-    private const val MARKED_TAG_START = "{marked:start}"
-    private const val MARKED_TAG_END = "{marked:end}"
+    private const val MARKED_TAG_START = "MARKED_START"
+    private const val MARKED_TAG_END = "MARKED_END"
 
     @Suppress("UnstableApiUsage")
     private const val TAG_START = TokenParser.TAG_START.toString()
