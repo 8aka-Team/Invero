@@ -46,6 +46,7 @@ taboolib {
 
     // 重定向
     relocate("kotlinx.serialization.", "kotlinx.serialization180.")
+    relocate("kotlinx.coroutines.", "kotlin210x.coroutines173.")
     relocate("org.slf4j", "cc.trixey.invero.libs.slf4j")
 }
 
@@ -62,6 +63,10 @@ dependencies {
     // Kotlin 序列化
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.8.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.8.0")
+    
+    // Kotlin Coroutines
+    taboo("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    taboo("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.3")
 
     // Adventure API
     compileOnly("net.kyori:adventure-api:4.19.0")
@@ -105,6 +110,7 @@ tasks.processResources {
             "adventurePlatform" to "4.3.4",
             "kr" to "210", // Kotlin Version Escaped
             "krx" to "180", // Kotlin Serialization Version Escaped
+            "coroutines" to "173", // Kotlin Coroutines Version Escaped
         )
     }
 }
