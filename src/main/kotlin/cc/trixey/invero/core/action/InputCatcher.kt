@@ -79,7 +79,7 @@ class InputCatcher(
         val success = afterInput?.run(context)?.getNow(true) ?: true
         if (!success) {
             onRepeat?.run(context)
-            run(player, context, repeat = repeat + 1)
+            run(player, context, repeat = repeat + 1, onComplete = onComplete)
         } else {
             onComplete()
         }
