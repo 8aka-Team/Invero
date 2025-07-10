@@ -12,7 +12,7 @@ plugins {
 taboolib {
 
     version {
-        taboolib = "6.2.3-eeb12e4"
+        taboolib = "6.2.3-5297ae6"
         coroutines = "1.10.2"
     }
 
