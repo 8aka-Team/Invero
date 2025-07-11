@@ -14,17 +14,57 @@ import taboolib.module.chat.colored
 import taboolib.module.chat.component
 import taboolib.module.nms.MinecraftVersion
 
+// 缓存序列化器以避免重复创建
+private val minecraftSerializer by lazy {
+    try {
+        MinecraftComponentSerializer.get()
+    } catch (ex: UnsupportedOperationException) {
+        null
+    }
+}
+
+// 缓存 NMS 转换方法以避免重复反射
+private val nmsConverters by lazy {
+    try {
+        val chatSerializerClass = Class.forName("net.minecraft.network.chat.Component\$Serializer")
+        val fromJsonMethod = chatSerializerClass.getMethod("fromJson", String::class.java)
+        Pair(chatSerializerClass, fromJsonMethod)
+    } catch (e: Exception) {
+        try {
+            val craftChatMessageClass = Class.forName("org.bukkit.craftbukkit.util.CraftChatMessage")
+            val fromJSONMethod = craftChatMessageClass.getMethod("fromJSON", String::class.java)
+            Pair(craftChatMessageClass, fromJSONMethod)
+        } catch (e2: Exception) {
+            null
+        }
+    }
+}
+
 @Suppress("UnstableApiUsage")
 fun Component.toMinecraft(): Any {
-    return try {
-        MinecraftComponentSerializer.get().serialize(this)
-    } catch (ex: UnsupportedOperationException) {
-        // 回退到 JSON 字符串，让 NMS 层处理转换
-        Message.transformToJson(this)
-    } catch (ex: Exception) {
-        // 最终回退到 JSON 字符串
-        Message.transformToJson(this)
+    // 优先使用缓存的序列化器
+    minecraftSerializer?.let { serializer ->
+        try {
+            return serializer.serialize(this)
+        } catch (ex: Exception) {
+            // 如果序列化失败，继续到下面的逻辑
+        }
     }
+
+    // 如果没有可用的序列化器，使用 JSON 转换
+    val json = Message.transformToJson(this)
+
+    // 使用缓存的 NMS 转换器
+    nmsConverters?.let { (_, method) ->
+        try {
+            return method.invoke(null, json) ?: json
+        } catch (e: Exception) {
+            // 转换失败，返回 JSON 字符串
+        }
+    }
+
+    // 最终回退到 JSON 字符串
+    return json
 }
 
 /**
