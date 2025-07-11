@@ -32,7 +32,33 @@ class NMSImpl : NMS {
     private val itemAir = null.asNMSCopy()
 
     override fun sendWindowOpen(player: Player, containerId: Int, type: ContainerType, rawTitle: String) {
-        val title = Message.parseAdventure(rawTitle).toMinecraft()
+        val titleComponent = Message.parseAdventure(rawTitle).toMinecraft()
+        // 如果 toMinecraft() 返回的是 JSON 字符串，需要转换为 Minecraft Component
+        val title = if (titleComponent is String) {
+            try {
+                // 尝试使用 ChatSerializer 将 JSON 转换为 IChatBaseComponent
+                val chatSerializerClass = Class.forName("net.minecraft.network.chat.Component\$Serializer")
+                val fromJsonMethod = chatSerializerClass.getMethod("fromJson", String::class.java)
+                fromJsonMethod.invoke(null, titleComponent)
+            } catch (e: Exception) {
+                try {
+                    // 回退到使用 CraftChatMessage
+                    val craftChatMessageClass = Class.forName("org.bukkit.craftbukkit.util.CraftChatMessage")
+                    val fromJSONMethod = craftChatMessageClass.getMethod("fromJSON", String::class.java)
+                    fromJSONMethod.invoke(null, titleComponent)
+                } catch (e2: Exception) {
+                    // 最终回退：创建一个简单的文本组件
+                    try {
+                        val componentClass = Class.forName("net.minecraft.network.chat.Component")
+                        val literalMethod = componentClass.getMethod("literal", String::class.java)
+                        literalMethod.invoke(null, rawTitle)
+                    } catch (e3: Exception) {
+                        titleComponent // 返回原始值，可能会导致错误但至少不会崩溃
+                    }
+                }
+            }
+        } else titleComponent
+
         val instance = PacketPlayOutOpenWindow::class.java.unsafeInstance()
 
         when {

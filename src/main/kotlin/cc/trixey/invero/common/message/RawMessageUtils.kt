@@ -9,10 +9,23 @@ import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.meta.ItemMeta
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.library.reflex.Reflex.Companion.setProperty
+import taboolib.module.chat.ComponentText
+import taboolib.module.chat.colored
+import taboolib.module.chat.component
 import taboolib.module.nms.MinecraftVersion
 
 @Suppress("UnstableApiUsage")
-fun Component.toMinecraft(): Any = MinecraftComponentSerializer.get().serialize(this)
+fun Component.toMinecraft(): Any {
+    return try {
+        MinecraftComponentSerializer.get().serialize(this)
+    } catch (ex: UnsupportedOperationException) {
+        // 回退到 JSON 字符串，让 NMS 层处理转换
+        Message.transformToJson(this)
+    } catch (ex: Exception) {
+        // 最终回退到 JSON 字符串
+        Message.transformToJson(this)
+    }
+}
 
 /**
  * 将 [Component] 写入物品的显示名称
