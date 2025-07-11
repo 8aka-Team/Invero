@@ -6,13 +6,14 @@ import cc.trixey.invero.ui.bukkit.nms.handler
 import cc.trixey.invero.ui.bukkit.panel.CraftingPanel
 import cc.trixey.invero.ui.bukkit.util.clickType
 import cc.trixey.invero.ui.bukkit.util.synced
-import kotlinx.coroutines.*
+// 移除 Coroutines 导入，使用 TabooLib 的异步任务替代
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.function.submit
+import taboolib.platform.BukkitExecutor
 import taboolib.common.platform.function.submitAsync
 
 /**
@@ -26,8 +27,8 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
 
     val container: Inventory = createContainer()
     
-    // 协程作用域，仅使用IO调度器，不使用Main调度器
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    // 使用 TabooLib 的异步任务替代协程
+    private var updateTask: BukkitExecutor.BukkitPlatformTask? = null
 
     private fun createContainer(): Inventory {
         return if (containerType.isOrdinaryChest)
@@ -67,8 +68,8 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
 
         if (!hidePlayerInventory || window.anyIOPanel) return
 
-        // 使用协程异步处理物品栏更新，避免主线程阻塞
-        coroutineScope.launch {
+        // 使用 TabooLib 异步任务处理物品栏更新，避免主线程阻塞
+        submit(async = true) {
             try {
                 val itemsToUpdate = if (slots.isEmpty()) {
                     playerInventoryItems
@@ -153,38 +154,28 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
         containerId = handler.getContainerId(viewer)
         updatePlayerInventory()
 
-        // 使用协程定期更新玩家物品栏，减少更新频率
+        // 使用 TabooLib 定时任务定期更新玩家物品栏，减少更新频率
         if (!hidePlayerInventory && !window.anyIOPanel) {
-            coroutineScope.launch {
-                while (isActive && window.isViewing()) {
-                    delay(1000) // 降低更新频率到1秒一次
-                    if (!isActive || !window.isViewing()) break
-                    
-                    // 使用taboolib的同步任务获取物品
-                    val newItems = CompletableDeferred<Array<ItemStack?>>()
-                    submit {
-                        if (viewer.isOnline) {
-                            newItems.complete(viewer.copyStorage())
-                        } else {
-                            newItems.complete(arrayOfNulls(36))
-                        }
-                    }
-                    
-                    val items = newItems.await()
+            updateTask = submit(async = false, delay = 20L, period = 20L) {
+                if (!window.isViewing()) {
+                    updateTask?.cancel()
+                    return@submit
+                }
+
+                // 获取并更新物品
+                if (viewer.isOnline) {
+                    val items = viewer.copyStorage()
                     if (items.isNotEmpty()) {
-                        // 回到主线程更新物品
-                        submit {
-                            playerInventoryItems = items
-                        }
+                        playerInventoryItems = items
                     }
                 }
-            }
+            } as BukkitExecutor.BukkitPlatformTask
         }
     }
 
-    // 清理协程资源
+    // 清理任务资源
     fun dispose() {
-        coroutineScope.cancel()
+        updateTask?.cancel()
     }
 
     fun handleClick(e: InventoryClickEvent) {

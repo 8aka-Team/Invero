@@ -13,7 +13,6 @@ taboolib {
 
     version {
         taboolib = "6.2.3-5297ae6"
-        coroutines = "1.10.2"
     }
 
     env {
@@ -49,7 +48,6 @@ taboolib {
 
     // 重定向
     relocate("kotlinx.serialization.", "kotlinx.serialization180.")
-    relocate("kotlinx.coroutines.", "kotlin210x.coroutines1102.")
     relocate("org.slf4j", "cc.trixey.invero.libs.slf4j")
 }
 
@@ -88,10 +86,6 @@ dependencies {
     // 添加 SLF4J 依赖
     taboo("org.slf4j:slf4j-api:1.7.36")
     taboo("org.slf4j:slf4j-simple:1.7.36")
-
-    // 添加 Kotlin Coroutines 依赖
-    taboo("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-    taboo("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.10.2")
 
     // Compatible Plugins
     compileOnly("ink.ptms.adyeshach:all:2.0.0-snapshot-36")
