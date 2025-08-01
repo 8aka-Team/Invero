@@ -49,9 +49,9 @@ object ItemStackJsonSerializer : KSerializer<ItemStack> {
             val init = ItemStack(Material.valueOf(this["type"]?.jsonPrimitive?.content ?: "STONE"))
 
             this["amount"]?.jsonPrimitive?.intOrNull?.let { init.amount = it.cint }
-            this["data"]?.jsonPrimitive?.let { init.durability = it.cshort }
+            this["durability"]?.jsonPrimitive?.let { init.durability = it.cshort }
             this["meta"]?.jsonObject?.let {
-                ItemTag.fromLegacyJson(it.toString()).saveTo(init)
+                ItemTag.fromJson(it.toString()).saveTo(init, false)
             }
 
             return init
