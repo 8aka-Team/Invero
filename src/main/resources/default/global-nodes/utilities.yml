@@ -1,0 +1,65 @@
+# Invero 全局节点工具配置文件
+# Global Nodes Utilities Configuration File
+# 常用的工具类节点
+# Common utility nodes
+
+nodes:
+  # 格式化数字
+  # Format number
+  format_number:
+    type: JAVASCRIPT
+    value: |
+      var num = session.getVariable("number") || 0;
+      return new Intl.NumberFormat().format(num);
+    throwError: true
+
+  # 获取在线玩家数
+  # Get online player count
+  online_players:
+    type: KETHER
+    value: |
+      return server online size
+    throwError: true
+
+  # 获取服务器TPS
+  # Get server TPS
+  server_tps:
+    type: KETHER
+    value: |
+      return server tps format "%.2f"
+    throwError: true
+
+  # 检查玩家余额
+  # Check player balance
+  player_balance:
+    type: KETHER
+    value: |
+      return player vault balance format "%.2f"
+    throwError: true
+
+  # 随机问候语
+  # Random greeting
+  random_greeting:
+    type: KETHER
+    value: |
+      set greetings to [ "你好！", "欢迎！", "很高兴见到你！", "祝你游戏愉快！" ]
+      return greetings random
+    throwError: true
+
+  # 获取世界名称
+  # Get world name
+  world_name:
+    type: KETHER
+    value: |
+      return player world name
+    throwError: true
+
+  # 计算游戏时间
+  # Calculate playtime
+  playtime_hours:
+    type: JAVASCRIPT
+    value: |
+      var ticks = session.getVariable("playtime_ticks") || 0;
+      var hours = Math.floor(ticks / 72000);
+      return hours + " 小时";
+    throwError: true
