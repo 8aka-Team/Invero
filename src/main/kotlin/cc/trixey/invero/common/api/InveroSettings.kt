@@ -86,4 +86,34 @@ object InveroSettings {
     var updateCheckerInterval = 1
         private set
 
+    /**
+     * 是否启用全局节点功能
+     */
+    @ConfigNode("GlobalNodes.enabled")
+    var globalNodesEnabled = true
+        private set
+
+    /**
+     * 全局节点工作路径
+     */
+    @ConfigNode("GlobalNodes.paths")
+    var globalNodesPaths = listOf<String>()
+        private set
+
+    /**
+     * 全局节点文件名过滤
+     */
+    @ConfigNode("GlobalNodes.filter")
+    var globalNodesFilter = "^(?![#!]).*\\.(?i)(conf|hocon|yaml|yml|toml|json)\$"
+        private set
+
+    /**
+     * 全局节点查找优先级
+     * menu-first: 优先查找菜单本地节点，再查找全局节点
+     * global-first: 优先查找全局节点，再查找菜单本地节点
+     */
+    @ConfigNode("GlobalNodes.priority")
+    var globalNodePriority = "menu-first"
+        private set
+
 }

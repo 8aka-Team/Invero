@@ -3,24 +3,24 @@
 # If you find any errors, please submit an issue on Github.
 #
 
-database-errored: '&8[&3I&8] &cInitialization of &7{0} &cdatabase failed... Please check the relevant configurations.'
-database-connected: '&8[&3I&8] &7Successfully connected to &a{0} &7database.'
+database-errored: '&8[&fInvero&8] &cInitialization of &7{0} &cdatabase failed... Please check the relevant configurations.'
+database-connected: '&8[&fInvero&8] &7Successfully connected to &a{0} &7database.'
 
-plugin-hooked: '&8[&3I&8] &7Successfully loaded support for plugin &e{0}&7.'
+plugin-hooked: '&8[&fInvero&8] &7Successfully loaded support for plugin &e{0}&7.'
 
-menu-loader-workspace-empty: '&8[&3I&8] &cNo valid workspace found. Menu loading stopped.'
-menu-loader-workspace-inited: '&8[&3I&8] &7Initializing &a{0} &7workspaces... Starting to load menus.'
-menu-loader-file-errored: '&8[&3I&8] &cLoading configuration file &7{0} &cencountered errors, ignoring...'
-menu-loader-menu-errored: '&8[&3I&8] &cMenu &7{0} &cencountered errors during deserialization. Please check the relevant configuration files...'
-menu-loader-menu-duplicate: '&8[&3I&8] &cMenu &7{0} &calready exists as another menu with the same name. Skipping loading...'
-menu-loader-menu-finished: '&8[&3I&8] &7Successfully loaded &a{0} &7valid menus... &8({1} secs)'
-menu-loader-auto-reload-errored: '&8[&3I&8] &cAutomatic reloading of menu &7{0} &cfailed.'
-menu-loader-auto-reload-successed: '&8[&3I&8] &7Auto-reloaded changes for menu {0}.'
+menu-loader-workspace-empty: '&8[&fInvero&8] &cNo valid workspace found. Menu loading stopped.'
+menu-loader-workspace-inited: '&8[&fInvero&8] &7Initializing &a{0} &7workspaces... Starting to load menus.'
+menu-loader-file-errored: '&8[&fInvero&8] &cLoading configuration file &7{0} &cencountered errors, ignoring...'
+menu-loader-menu-errored: '&8[&fInvero&8] &cMenu &7{0} &cencountered errors during deserialization. Please check the relevant configuration files...'
+menu-loader-menu-duplicate: '&8[&fInvero&8] &cMenu &7{0} &calready exists as another menu with the same name. Skipping loading...'
+menu-loader-menu-finished: '&8[&fInvero&8] &7Successfully loaded &a{0} &7valid menus... &8({1} secs)'
+menu-loader-auto-reload-errored: '&8[&fInvero&8] &cAutomatic reloading of menu &7{0} &cfailed.'
+menu-loader-auto-reload-successed: '&8[&fInvero&8] &7Auto-reloaded changes for menu {0}.'
 
-menu-list-empty: '&8[&3I&8] &7No menu found &8(filter = {0}).'
+menu-list-empty: '&8[&fInvero&8] &7No menu found &8(filter = {0}).'
 menu-list-header: [
   '&r',
-  '&8[&3I&8] &7Found &f{0} &7menus, listed below:',
+  '&8[&fInvero&8] &7Found &f{0} &7menus, listed below:',
   '&r'
 ]
 menu-list-item:
@@ -30,17 +30,46 @@ menu-list-item:
       - hover: '&7Click to open'
         command: '/menu open {0}'
 
-item-air: '&8[&3I&8] &7Target item is empty. Operation cannot be continued.'
+item-air: '&8[&fInvero&8] &7Target item is empty. Operation cannot be continued.'
 
-paste-init: '&8[&3I&8] &7Creating paste content for you, please wait...'
-paste-failed: '&8[&3I&8] &7An error occurred while creating clipboard content. Operation cannot continue.'
-paste-success: '&8[&3I&8] &7Please follow this link to view the related text: &a{0}'
-paste-config-loaded: '&8[&3I&8] &7Paste configuration loaded, current service: &f{0}'
-paste-service-error: '&8[&3I&8] &cPaste service error: &7{0}'
+paste-init: '&8[&fInvero&8] &7Creating paste content for you, please wait...'
+paste-failed: '&8[&fInvero&8] &7An error occurred while creating clipboard content. Operation cannot continue.'
+paste-success: '&8[&fInvero&8] &7Please follow this link to view the related text: &a{0}'
+paste-config-loaded: '&8[&fInvero&8] &7Paste configuration loaded, current service: &f{0}'
+paste-service-error: '&8[&fInvero&8] &cPaste service error: &7{0}'
 
-update-checking: '&8[&3I&8] &7Checking for updates...'
-update-available: '&8[&3I&8] &eNew version available! Current version: &c{0}&e, Latest version: &a{1}'
-update-url: '&8[&3I&8] &eVisit: &bhttps://invero.8aka.org/download &eto get the latest version'
-up-to-date: '&8[&3I&8] &7You are using the latest version!'
+update-checking: '&8[&fInvero&8] &7Checking for updates...'
+update-available: '&8[&fInvero&8] &eNew version available! Current version: &c{0}&e, Latest version: &a{1}'
+update-url: '&8[&fInvero&8] &eVisit: &bhttps://invero.8aka.org/download &eto get the latest version'
+up-to-date: '&8[&fInvero&8] &7You are using the latest version!'
 
-throwable-print: '&8[&3I&8] &cAn error occurred.'
+throwable-print: '&8[&fInvero&8] &cAn error occurred.'
+
+global-nodes-enabled: '&8[&fInvero&8] &7Found &f{0} &7global nodes'
+global-nodes-disabled: '&8[&fInvero&8] &7Global nodes disabled'
+global-nodes-workspace-inited: '&8[&fInvero&8] &7Initialized &a{0} &7workspaces'
+global-nodes-file-loading: '&8[&fInvero&8] &7Loading &f{0}'
+global-nodes-file-created: '&8[&fInvero&8] &7Created &f{0}'
+global-nodes-file-errored: '&8[&fInvero&8] &cFile &7{0} &cload failed'
+global-nodes-node-loaded: '&8- &3{0} &8(&7{1}&8)'
+global-nodes-node-errored: '&8[&fInvero&8] &cNode &7{0} &cload failed: &f{1}'
+global-nodes-reload-success: '&8[&fInvero&8] &7Reload completed &f{0} &8-> &f{1}'
+global-nodes-reload-failed: '&8[&fInvero&8] &cReload failed: &f{0}'
+
+global-nodes-command-disabled: '&8[&fInvero&8] &cGlobal nodes not enabled'
+global-nodes-command-list-empty: '&8[&fInvero&8] &eNo global nodes found'
+global-nodes-command-list-header: '&8[&fInvero&8] &7Found &f{0} &7global nodes, listed below'
+global-nodes-command-list-item: '&8- &3{0} &8(&7{1}&8)'
+global-nodes-command-info-header: '&8[&fInvero&8] &7Global nodes configuration'
+global-nodes-command-info-enabled: '&8- &7Status: &aEnabled'
+global-nodes-command-info-disabled: '&8- &7Status: &cDisabled'
+global-nodes-command-info-paths: '&8- &7Paths: &f{0}'
+global-nodes-command-info-priority: '&8- &7Priority: &f{0}'
+global-nodes-command-info-count: '&8- &7Nodes: &f{0}'
+global-nodes-command-test-usage: '&8[&fInvero&8] &cUsage: /ignode test <node_name>'
+global-nodes-command-test-not-found: '&8- &cNode &7{0} &cnot found'
+global-nodes-command-test-available: '&8- &7Available: &f{0}'
+global-nodes-command-test-found: '&8- &aNode &7{0}&a:'
+global-nodes-command-test-type: '&7- Type: &f{0}'
+global-nodes-command-test-value: '&7- Content: &f{0}'
+global-nodes-command-test-throw: '&7- Throw: &f{0}'

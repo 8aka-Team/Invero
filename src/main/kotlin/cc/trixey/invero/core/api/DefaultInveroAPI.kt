@@ -24,6 +24,8 @@ class DefaultInveroAPI : InveroAPI {
 
     override fun getRegistry() = PlatformFactory.getAPI<InveroRegistry>()
 
+    override fun getGlobalNodeManager() = PlatformFactory.getAPI<InveroGlobalNodeManager>()
+
     companion object {
 
         @Awake(LifeCycle.INIT)

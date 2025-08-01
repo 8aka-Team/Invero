@@ -35,4 +35,10 @@ interface InveroAPI {
      */
     fun getRegistry(): InveroRegistry
 
+    /**
+     * Access to the Global Node Manager
+     * 获取全局节点管理器，用于管理可被所有菜单调用的全局节点
+     */
+    fun getGlobalNodeManager(): InveroGlobalNodeManager
+
 }

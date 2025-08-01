@@ -1,0 +1,58 @@
+# Invero 全局节点示例配置文件
+# Global Nodes Example Configuration File
+# 在这里定义的节点可以被所有菜单调用
+# Nodes defined here can be called by all menus
+
+nodes:
+  # 示例：欢迎消息节点
+  # Example: Welcome message node
+  welcome:
+    type: TEXT
+    value: "§a欢迎 %player_name% 来到服务器！"
+    throwError: true
+    
+  # 示例：获取玩家等级
+  # Example: Get player level
+  get_player_level:
+    type: KETHER
+    value: |
+      return player data get "level" or 1
+    throwError: true
+      
+  # 示例：计算VIP奖励
+  # Example: Calculate VIP bonus
+  calculate_vip_bonus:
+    type: JAVASCRIPT
+    value: |
+      var level = session.getVariable("player_level") || 1;
+      var isVip = session.getVariable("is_vip") || false;
+      var bonus = level * (isVip ? 2 : 1);
+      return "等级奖励: " + bonus + " 金币";
+    throwError: true
+
+  # 示例：简单常量
+  # Example: Simple constant
+  server_name:
+    type: CONST
+    value: "我的服务器"
+    throwError: false
+
+  # 示例：获取当前时间
+  # Example: Get current time
+  current_time:
+    type: KETHER
+    value: |
+      return date format "yyyy-MM-dd HH:mm:ss"
+    throwError: true
+
+  # 示例：检查权限
+  # Example: Check permission
+  check_vip:
+    type: KETHER
+    value: |
+      if player has permission "vip" then {
+        return "§aVIP玩家"
+      } else {
+        return "§7普通玩家"
+      }
+    throwError: true

@@ -1,5 +1,6 @@
 package cc.trixey.invero.core.command
 
+import cc.trixey.invero.core.command.sub.CommandGlobalNode
 import cc.trixey.invero.core.command.sub.CommandItem
 import cc.trixey.invero.core.command.sub.CommandMenu
 import cc.trixey.invero.core.command.sub.CommandUpdate
@@ -28,7 +29,10 @@ object Comamnd {
 
     @CommandBody
     val item = CommandItem
-    
+
+    @CommandBody
+    val gnode = CommandGlobalNode
+
     @CommandBody
     val update = CommandUpdate
 
