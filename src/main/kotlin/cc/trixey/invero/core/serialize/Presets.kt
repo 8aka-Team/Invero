@@ -32,6 +32,7 @@ internal val textureSourcedKeys = arrayOf(
     "zaphkiel", "zap",
     "oraxen",
     "itemsadder", "ia",
+    "craftengine", "ce",
     "headdatabase", "hdb",
     "base64", "json", "serialized",
     "kether"

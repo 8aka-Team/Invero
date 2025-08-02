@@ -57,6 +57,7 @@ repositories {
     maven("https://jitpack.io")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.oraxen.com/releases")
+    maven("https://repo.momirealms.net/releases/")
 }
 
 dependencies {
@@ -94,6 +95,10 @@ dependencies {
     compileOnly("ink.ptms:Zaphkiel:2.0.14")
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.2")
     compileOnly("com.github.LoneDev6:API-ItemsAdder:3.6.3-beta-14")
+
+    // CraftEngine
+    compileOnly("net.momirealms:craft-engine-core:0.0.22") { isTransitive = false }
+    compileOnly("net.momirealms:craft-engine-bukkit:0.0.22") { isTransitive = false }
 
     compileOnly(fileTree("libs"))
 }
