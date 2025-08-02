@@ -22,11 +22,8 @@ class CraftEngineItemProvider : ItemSourceProvider, PluginHook() {
     override fun getItem(identifier: String, context: Any?): ItemStack? {
         return try {
             val player = (context as? Context)?.viewer?.get<Player>() ?: return null
-            val (namespace, id) = identifier.split(":", limit = 2)
-            val key = Key(namespace, id)
-            val item = CraftEngineItems.byId(key) ?: return null
             val craftPlayer = BukkitCraftEngine.instance().adapt(player)
-            item.buildItemStack(craftPlayer)
+            CraftEngineItems.byId(Key.of(identifier))?.buildItemStack(craftPlayer) ?: return null
         } catch (e: Exception) {
             // 如果出现异常（比如 CraftEngine 未安装），返回 null，让系统使用默认纹理
             null
