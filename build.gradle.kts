@@ -59,6 +59,7 @@ repositories {
     maven("https://repo.oraxen.com/releases")
     maven("https://repo.momirealms.net/releases/")
     maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
+    maven("https://repo.auxilor.io/repository/maven-public/")
 }
 
 dependencies {
@@ -104,6 +105,11 @@ dependencies {
     // MMOItems
     compileOnly("io.lumine:MythicLib-dist:1.6.2-SNAPSHOT") { isTransitive = false } // Required by MMOItems API
     compileOnly("net.Indyuce:MMOItems-API:6.10-SNAPSHOT") { isTransitive = false }
+
+    // EcoItems
+    compileOnly("com.willfp:eco:6.71.3") { isTransitive = false }
+    compileOnly("com.willfp:libreforge:4.60.0") { isTransitive = false }
+    compileOnly("com.willfp:EcoItems:5.49.1") { isTransitive = false }
 
     compileOnly(fileTree("libs"))
 }
