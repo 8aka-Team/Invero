@@ -111,6 +111,9 @@ dependencies {
     compileOnly("com.willfp:libreforge:4.60.0") { isTransitive = false }
     compileOnly("com.willfp:EcoItems:5.49.1") { isTransitive = false }
 
+    // MagicCosmetics
+    compileOnly("com.github.FrancoBM12:API-MagicCosmetics:2.2.7") { isTransitive = false }
+
     compileOnly(fileTree("libs"))
 }
 
