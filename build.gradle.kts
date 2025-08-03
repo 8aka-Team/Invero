@@ -58,6 +58,7 @@ repositories {
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.oraxen.com/releases")
     maven("https://repo.momirealms.net/releases/")
+    maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
 }
 
 dependencies {
@@ -99,6 +100,10 @@ dependencies {
     // CraftEngine
     compileOnly("net.momirealms:craft-engine-core:0.0.22") { isTransitive = false }
     compileOnly("net.momirealms:craft-engine-bukkit:0.0.22") { isTransitive = false }
+
+    // MMOItems
+    compileOnly("io.lumine:MythicLib-dist:1.6.2-SNAPSHOT") { isTransitive = false } // Required by MMOItems API
+    compileOnly("net.Indyuce:MMOItems-API:6.10-SNAPSHOT") { isTransitive = false }
 
     compileOnly(fileTree("libs"))
 }
