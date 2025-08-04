@@ -40,6 +40,7 @@ internal val textureSourcedKeys = arrayOf(
     "magiccosmetics", "magic",
     "magicgem", "gem",
     "nexo",
+    "slimefun", "sf",
     "headdatabase", "hdb",
     "base64", "json", "serialized",
     "kether"

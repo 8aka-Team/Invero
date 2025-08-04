@@ -114,6 +114,9 @@ dependencies {
     // MagicCosmetics
     compileOnly("com.github.FrancoBM12:API-MagicCosmetics:2.2.7") { isTransitive = false }
 
+    // Slimefun
+    compileOnly("io.github.Slimefun:Slimefun4:RC-32") { isTransitive = false }
+
     compileOnly(fileTree("libs"))
 }
 
