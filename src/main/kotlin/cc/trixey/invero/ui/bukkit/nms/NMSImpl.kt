@@ -1,7 +1,5 @@
 package cc.trixey.invero.ui.bukkit.nms
 
-import cc.trixey.invero.common.message.Message
-import cc.trixey.invero.common.message.toMinecraft
 import cc.trixey.invero.ui.common.ContainerType
 import net.minecraft.server.v1_16_R3.*
 import net.minecraft.world.inventory.Containers
@@ -32,21 +30,7 @@ class NMSImpl : NMS {
     private val itemAir = null.asNMSCopy()
 
     override fun sendWindowOpen(player: Player, containerId: Int, type: ContainerType, rawTitle: String) {
-        // 性能优化：对于简单文本，直接使用传统方法
-        val title = if (rawTitle.contains('<') || rawTitle.contains('&') || rawTitle.contains('§')) {
-            // 包含格式化代码，使用 Adventure 处理
-            Message.parseAdventure(rawTitle).toMinecraft()
-        } else {
-            // 纯文本，直接创建简单组件
-            try {
-                val componentClass = Class.forName("net.minecraft.network.chat.Component")
-                val literalMethod = componentClass.getMethod("literal", String::class.java)
-                literalMethod.invoke(null, rawTitle)
-            } catch (e: Exception) {
-                // 如果简单方法失败，回退到 Adventure
-                Message.parseAdventure(rawTitle).toMinecraft()
-            }
-        }
+        val title = InventoryHandler.instance.parseToCraftChatMessage(rawTitle)
 
         val instance = PacketPlayOutOpenWindow::class.java.unsafeInstance()
 

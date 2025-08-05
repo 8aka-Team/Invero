@@ -33,7 +33,7 @@ object Invero : Plugin() {
         §3 | |§b| | | \\ §3V /  §b__/ |   §3| (_) |
         §3|___|§b_| |_|\\§3_/ \\§b___|_|  §3\\___/
         
-        §8Invero §7v${bukkitPlugin.description.version} §8- §7MC 1.21.4
+        §8Invero §7v${bukkitPlugin.description.version} §8- §7MC 1.21.8
         §7By Arasple, Maintained by 8aka Team
         §7QQ群: §f489868834 §8| §7GitHub: §fhttps://github.com/8aka-Team/Invero
         """.lines().forEach { console().sendMessage(it) }
