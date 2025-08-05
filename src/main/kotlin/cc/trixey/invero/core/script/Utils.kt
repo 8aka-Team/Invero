@@ -96,11 +96,11 @@ fun ScriptFrame.session(): Session? {
     return player().session
 }
 
-fun ScriptFrame.parse(string: String): String {
+fun ScriptFrame.parse(string: String, skipComp: Boolean = false): String {
     val session = session()
     if (session != null) {
         return session.parse(string)
     } else {
-        return string.translateFormattedMessage(player(), deepVars())
+        return string.translateFormattedMessage(player(), deepVars(), skipComp)
     }
 }

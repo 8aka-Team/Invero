@@ -22,7 +22,7 @@ class ActionCommand(val command: ParsedAction<*>, private val type: Type) : Scri
 
             // 虽有损耗，可以接受
             val command = it.toString().trimIndent().let { content ->
-                frame.parse(content)
+                frame.parse(content, true)
             }
 
             when (type) {
