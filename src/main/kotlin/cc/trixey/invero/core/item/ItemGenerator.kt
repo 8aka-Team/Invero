@@ -1,7 +1,5 @@
 package cc.trixey.invero.core.item
 
-import cc.trixey.invero.common.message.writeDisplayName
-import cc.trixey.invero.common.message.writeLore
 import cc.trixey.invero.core.Context
 import cc.trixey.invero.core.icon.IconElement
 import cc.trixey.invero.core.util.flatRelease
@@ -64,11 +62,11 @@ private fun ItemStack.generateProperties(
     return modifyMeta<ItemMeta> {
         // 显示名称
         frameBy { name }?.let {
-            writeDisplayName(context.parse(it).prefixColored)
+            setDisplayName(context.parse(it).prefixColored)
         }
         // 显示描述
         frameBy { lore }?.let {
-            writeLore(context.parse(it).loreColored(frame.enhancedLore))
+            lore = context.parse(it).loreColored(frame.enhancedLore)
         }
         // [属性] 数量
         frameBy { amount }?.let {

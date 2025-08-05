@@ -5,12 +5,10 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.internal.parser.TokenParser
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.AMPERSAND_CHAR
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.SECTION_CHAR
 import net.kyori.adventure.platform.bukkit.BukkitAudiences
-import taboolib.module.nms.MinecraftVersion
 import taboolib.platform.BukkitPlugin
 
 /**
@@ -28,19 +26,12 @@ object Message {
 
     @JvmStatic
     val gsonBuilder by lazy {
-        if (MinecraftVersion.isLower(MinecraftVersion.V1_16)) {
-            GsonComponentSerializer.colorDownsamplingGson()
-        } else GsonComponentSerializer.gson()
+        BukkitComponentSerializer.gson()
     }
 
     @JvmStatic
     val legacyBuilder by lazy {
-        LegacyComponentSerializer.builder().also {
-            if (MinecraftVersion.isHigherOrEqual(MinecraftVersion.V1_16)) {
-                it.hexColors()
-                it.useUnusualXRepeatedCharacterHexFormat()
-            }
-        }.build()
+        BukkitComponentSerializer.legacy()
     }
 
     @JvmStatic

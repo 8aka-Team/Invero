@@ -6,7 +6,7 @@ import cc.trixey.invero.ui.bukkit.nms.handler
 import cc.trixey.invero.ui.bukkit.panel.CraftingPanel
 import cc.trixey.invero.ui.bukkit.util.clickType
 import cc.trixey.invero.ui.bukkit.util.synced
-// 移除 Coroutines 导入，使用 TabooLib 的异步任务替代
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
 import org.bukkit.inventory.Inventory
@@ -29,15 +29,16 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
     
     // 使用 TabooLib 的异步任务替代协程
     private var updateTask: BukkitExecutor.BukkitPlatformTask? = null
-
-    private fun createContainer(): Inventory {
-        return if (containerType.isOrdinaryChest)
-            createInventoryPaper(Holder(window), containerType.containerSize, inventoryTitle)
-        else try {
-            createInventoryPaper(Holder(window), InventoryType.valueOf(containerType.bukkitType), inventoryTitle)
-        } catch (e: Throwable) {
-            error("Not supported inventory type (${containerType.bukkitType}) yet")
-        }
+    val container = if (containerType.isOrdinaryChest)
+        Bukkit.createInventory(Holder(window), containerType.containerSize, inventoryTitle)
+    else try {
+        Bukkit.createInventory(
+            Holder(window),
+            InventoryType.valueOf(containerType.bukkitType),
+            inventoryTitle
+        )
+    } catch (e: Throwable) {
+        error("Not supported inventory type (${containerType.bukkitType}) yet")
     }
 
     override val hidePlayerInventory: Boolean by lazy { window.hidePlayerInventory }
