@@ -1,6 +1,5 @@
 package cc.trixey.invero.ui.bukkit
 
-import cc.trixey.invero.common.message.createInventoryPaper
 import cc.trixey.invero.ui.bukkit.api.isRegistered
 import cc.trixey.invero.ui.bukkit.nms.handler
 import cc.trixey.invero.ui.bukkit.panel.CraftingPanel
@@ -24,12 +23,11 @@ import taboolib.common.platform.function.submitAsync
  * @since 2023/1/20 13:13
  */
 class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory {
-
-    val container: Inventory = createContainer()
     
     // 使用 TabooLib 的异步任务替代协程
     private var updateTask: BukkitExecutor.BukkitPlatformTask? = null
-    val container = if (containerType.isOrdinaryChest)
+
+    val container: Inventory = if (containerType.isOrdinaryChest)
         Bukkit.createInventory(Holder(window), containerType.containerSize, inventoryTitle)
     else try {
         Bukkit.createInventory(
