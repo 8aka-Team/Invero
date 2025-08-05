@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import taboolib.common.platform.command.*
 import taboolib.common.platform.command.component.CommandComponent
 import taboolib.common.platform.function.unregisterCommand
+import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Invero
@@ -23,7 +24,7 @@ class ActivatorCommand(val command: JsonElement) : MenuActivator<ActivatorComman
 
     constructor() : this(JsonPrimitive(0))
 
-    private val registeredCommands = mutableSetOf<String>()
+    private val registeredCommands = CopyOnWriteArraySet<String>()
 
     override fun setActivatorMenu(menu: Menu) {
         super.setActivatorMenu(menu)
