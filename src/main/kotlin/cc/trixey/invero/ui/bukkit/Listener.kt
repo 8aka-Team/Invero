@@ -160,8 +160,8 @@ object Listener {
                     inventory as InventoryPacket
                 }
 
-                val rawSlot = packet.read<Int>(FILEDS_WINDOW_CLICK[1]) ?: return
-                val button = packet.read<Int>(FILEDS_WINDOW_CLICK[2]) ?: return
+                val rawSlot = packet.read<Number>(FILEDS_WINDOW_CLICK[1])?.toInt() ?: return
+                val button = packet.read<Number>(FILEDS_WINDOW_CLICK[2])?.toInt() ?: return
                 val mode = ClickType.Mode.valueOf(packet.read<Any>(FILEDS_WINDOW_CLICK[3]).toString())
                 val type = ClickType.find(mode, button, rawSlot) ?: return
 
