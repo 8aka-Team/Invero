@@ -174,7 +174,7 @@ class DefaultMenuManager : InveroMenuManager {
                         FAILURE_FILE -> receiver.sendLang("menu-loader-file-errored", file.name)
                         FAILURE_MENU -> receiver.sendLang("menu-loader-menu-errored", file.name)
                         FAILURE_DUPLICATED -> receiver.sendLang("menu-loader-menu-duplicate", file.name)
-                        SUCCESS -> registerListener(file, it.menu as BaseMenu)
+                        SUCCESS -> if (InveroSettings.fileListener) registerListener(file, it.menu as BaseMenu)
                     }
                     it.print()
                 }

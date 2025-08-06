@@ -40,6 +40,13 @@ object InveroSettings {
         private set
 
     /**
+     * 启用文件监听器
+     */
+    @ConfigNode("Workspaces.file-listener")
+    var fileListener = true
+        private set
+
+    /**
      * 文件名过滤
      */
     @ConfigNode("Workspaces.filter")

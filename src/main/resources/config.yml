@@ -4,6 +4,8 @@ Kether:
 
 # 工作空间
 Workspaces:
+  # 是否启用文件监听(自动重载)
+  file-listener: true
   # 匹配文件名加载（正则表达式） | filter file name
   filter: '^(?![#!]).*\.(?i)(conf|hocon|yaml|yml|toml|json)$'
   # 自定义工作路径 | custom workspace path
