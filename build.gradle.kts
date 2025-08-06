@@ -117,6 +117,7 @@ dependencies {
     // Slimefun
     compileOnly("io.github.Slimefun:Slimefun4:RC-32") { isTransitive = false }
 
+    // 本地依赖库
     compileOnly(fileTree("libs"))
 }
 
