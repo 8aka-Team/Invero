@@ -56,7 +56,7 @@ object ActionMenu {
                                         session.parse(it)
                                     }
                                 }
-                                .toRawMessage()
+                                .toLegacyText()
                                 .let { session.window.title = it }
                         }
 
