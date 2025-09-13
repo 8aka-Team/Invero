@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.module.chat.HexColor
 import taboolib.module.chat.component
+import taboolib.module.chat.impl.AdventureComponent
 import taboolib.module.nms.MinecraftVersion
 import taboolib.platform.compat.replacePlaceholder
 
@@ -41,6 +42,12 @@ fun String.translateFormattedMessage(
             if (skipComp) it else it.component().build().toLegacyText()
         }
 
+/**
+ * 文本转 [AdventureComponent]
+ * @see Message.parseAdventure
+ */
+fun String.componentAdventure(): AdventureComponent = AdventureComponent(Message.parseAdventure(this))
+
 private const val COLOR_CHAR = "[[COLOR_CHAR]]"
 
 /**
@@ -50,7 +57,7 @@ private const val COLOR_CHAR = "[[COLOR_CHAR]]"
  * - Placeholder API
  * - Adventure MiniMessage
  */
-fun String.sendFormattedMiniMessageComponent(player: Player, variables: Map<String, Any> = emptyMap()) {
+fun String.sendFormattedAdventureComponent(player: Player, variables: Map<String, Any> = emptyMap()) {
     val processed = KetherHandler.parseInline(this, player, variables)
         .replacePlaceholder(player)
 

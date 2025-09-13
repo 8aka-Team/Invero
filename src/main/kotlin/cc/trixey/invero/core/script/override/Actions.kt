@@ -5,9 +5,8 @@ import cc.trixey.invero.core.script.contextVar
 import cc.trixey.invero.core.script.loader.InveroKetherParser
 import cc.trixey.invero.core.script.parse
 import cc.trixey.invero.core.script.player
-import cc.trixey.invero.common.message.sendFormattedMiniMessageComponent
+import cc.trixey.invero.common.message.sendFormattedAdventureComponent
 import cc.trixey.invero.common.message.sendFormattedTabooComponent
-import cc.trixey.invero.common.message.translateFormattedMessage
 import taboolib.common.platform.function.onlinePlayers
 import taboolib.module.kether.combinationParser
 import taboolib.platform.util.sendActionBar
@@ -28,7 +27,7 @@ fun actionTell() = combinationParser {
             val context = contextVar<Context?>("@context")?.variables ?: variables().toMap()
             val player = player()
 
-            message.sendFormattedMiniMessageComponent(player, context)
+            message.sendFormattedAdventureComponent(player, context)
         }
     }
 }
@@ -42,7 +41,7 @@ fun actionTellMiniMessage() = combinationParser {
             val context = contextVar<Context?>("@context")?.variables ?: variables().toMap()
             val player = player()
 
-            message.sendFormattedMiniMessageComponent(player, context)
+            message.sendFormattedAdventureComponent(player, context)
         }
     }
 }

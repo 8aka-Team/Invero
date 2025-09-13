@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     java
-    kotlin("jvm") version "2.1.0"
-    kotlin("plugin.serialization") version "2.1.0"
+    kotlin("jvm") version "2.2.0"
+    kotlin("plugin.serialization") version "2.2.0"
     id("io.izzel.taboolib") version "2.0.25"
 }
 
@@ -65,19 +65,19 @@ repositories {
 dependencies {
     compileOnly(kotlin("stdlib"))
     // Kotlin 序列化
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.8.0")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.8.0")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.9.0")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.9.0")
 
     // Adventure API - 使用更兼容的版本以支持更广泛的 MC 版本
-    compileOnly("net.kyori:adventure-api:4.17.0")
-    compileOnly("net.kyori:adventure-text-minimessage:4.17.0")
-    compileOnly("net.kyori:adventure-text-serializer-gson:4.17.0")
-    compileOnly("net.kyori:adventure-text-serializer-legacy:4.17.0")
-    compileOnly("net.kyori:adventure-platform-bukkit:4.3.4")
+    compileOnly("net.kyori:adventure-api:4.24.0")
+    compileOnly("net.kyori:adventure-text-minimessage:4.24.0")
+    compileOnly("net.kyori:adventure-text-serializer-gson:4.24.0")
+    compileOnly("net.kyori:adventure-text-serializer-legacy:4.24.0")
+    compileOnly("net.kyori:adventure-platform-bukkit:4.4.1")
 
     // Minecraft Core
-    compileOnly("ink.ptms.core:v12101:12101:mapped")
-    compileOnly("ink.ptms.core:v12101:12101:universal")
+    compileOnly("ink.ptms.core:v12105:12105:mapped")
+    compileOnly("ink.ptms.core:v12105:12105:universal")
     compileOnly("ink.ptms:nms-all:1.0.0")
 
     compileOnly("io.netty:netty-all:4.1.106.Final")
@@ -125,11 +125,11 @@ dependencies {
 tasks.processResources {
     filesMatching("**/*.json") {
         expand(
-            "serialization" to "1.8.0",
-            "adventureApi" to "4.17.0",
-            "adventurePlatform" to "4.3.4",
-            "kr" to "210", // Kotlin Version Escaped
-            "krx" to "180", // Kotlin Serialization Version Escaped
+            "serialization" to "1.9.0",
+            "adventureApi" to "4.24.0",
+            "adventurePlatform" to "4.4.1",
+            "kr" to "220", // Kotlin Version Escaped
+            "krx" to "190", // Kotlin Serialization Version Escaped
         )
     }
 }
