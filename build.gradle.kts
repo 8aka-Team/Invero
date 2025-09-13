@@ -47,7 +47,7 @@ taboolib {
     }
 
     // 重定向
-    relocate("kotlinx.serialization.", "kotlinx.serialization180.")
+    relocate("kotlinx.serialization.", "kotlinx.serialization190.")
     relocate("org.slf4j", "cc.trixey.invero.libs.slf4j")
 }
 
