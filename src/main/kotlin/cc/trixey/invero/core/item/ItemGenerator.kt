@@ -1,5 +1,6 @@
 package cc.trixey.invero.core.item
 
+import cc.trixey.invero.common.message.componentAdventure
 import cc.trixey.invero.core.Context
 import cc.trixey.invero.core.icon.IconElement
 import cc.trixey.invero.core.util.flatRelease
@@ -16,9 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta
 import taboolib.common5.cbool
 import taboolib.common5.cint
 import taboolib.common5.cshort
-import taboolib.module.nms.ItemTag
-import taboolib.module.nms.MinecraftVersion
-import taboolib.module.nms.getItemTag
+import taboolib.module.nms.*
 import taboolib.platform.util.isAir
 import taboolib.platform.util.modifyMeta
 
@@ -61,12 +60,12 @@ private fun ItemStack.generateProperties(
 
     return modifyMeta<ItemMeta> {
         // 显示名称
-        frameBy { name }?.let {
-            setDisplayName(context.parse(it).prefixColored)
+        frameBy { name }?.let { input ->
+            setDisplayNameComponent(context.parse(input).prefixColored.componentAdventure())
         }
         // 显示描述
-        frameBy { lore }?.let {
-            lore = context.parse(it).loreColored(frame.enhancedLore)
+        frameBy { lore }?.let { input ->
+            setLoreComponents(context.parse(input).loreColored(frame.enhancedLore).map { it.componentAdventure() })
         }
         // [属性] 数量
         frameBy { amount }?.let {
@@ -79,6 +78,7 @@ private fun ItemStack.generateProperties(
         }
         // [属性] 模型数据
         frameBy { customModelData }?.let {
+            @Suppress("DEPRECATION")
             setCustomModelData(frame.staticCustomModelData ?: context.parse(it.content).cint)
         }
         // [属性] 是否发光

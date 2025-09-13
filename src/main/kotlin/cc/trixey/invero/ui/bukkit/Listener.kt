@@ -22,6 +22,7 @@ import taboolib.common.platform.Awake
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submit
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
+import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.MinecraftVersion.isUniversal
 import taboolib.module.nms.PacketReceiveEvent
 import taboolib.platform.event.PlayerJumpEvent
@@ -158,6 +159,8 @@ object Listener {
                 } else {
                     packet.read<Int>(FILEDS_WINDOW_CLICK[0]).let { if (it != persistContainerId) return }
                     inventory as InventoryPacket
+                    // 尝试在虚拟菜单取消收包，阻止校验
+                    if (MinecraftVersion.versionId >= 12102) e.isCancelled = false
                 }
 
                 val rawSlot = packet.read<Number>(FILEDS_WINDOW_CLICK[1])?.toInt() ?: return
