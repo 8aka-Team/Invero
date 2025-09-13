@@ -18,8 +18,8 @@ class GeneratorSounds : BaseGenerator() {
     override fun generate() {
         generated = Sound.values().map { sound ->
             sourceObject {
-                put("name", sound.name)
-                put("ordinal", sound.ordinal)
+                put("name", sound.name())
+                put("ordinal", sound.ordinal())
             }
         }
     }
