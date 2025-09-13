@@ -1,5 +1,6 @@
 package cc.trixey.invero.ui.bukkit
 
+import cc.trixey.invero.common.message.toRawOrNot
 import cc.trixey.invero.ui.bukkit.api.isRegistered
 import cc.trixey.invero.ui.bukkit.nms.handler
 import cc.trixey.invero.ui.bukkit.panel.CraftingPanel
@@ -12,8 +13,8 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.function.submit
-import taboolib.platform.BukkitExecutor
 import taboolib.common.platform.function.submitAsync
+import taboolib.platform.BukkitExecutor
 
 /**
  * Invero
@@ -23,19 +24,19 @@ import taboolib.common.platform.function.submitAsync
  * @since 2023/1/20 13:13
  */
 class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory {
-    
+
     // 使用 TabooLib 的异步任务替代协程
     private var updateTask: BukkitExecutor.BukkitPlatformTask? = null
 
     val container: Inventory = if (containerType.isOrdinaryChest)
-        Bukkit.createInventory(Holder(window), containerType.containerSize, inventoryTitle)
+        Bukkit.createInventory(Holder(window), containerType.containerSize, inventoryTitle.toRawOrNot())
     else try {
         Bukkit.createInventory(
             Holder(window),
             InventoryType.valueOf(containerType.bukkitType),
-            inventoryTitle
+            inventoryTitle.toRawOrNot()
         )
-    } catch (e: Throwable) {
+    } catch (_: Throwable) {
         error("Not supported inventory type (${containerType.bukkitType}) yet")
     }
 
@@ -77,7 +78,7 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
                 } else {
                     slots.map { containerSize + it to playerInventoryItems[it] }.toMap()
                 }
-                
+
                 // 使用taboolib的同步任务回到主线程
                 submit {
                     if (viewer.isOnline && isViewing()) {
@@ -236,7 +237,7 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
         // 默认取消
         e.isCancelled = true
         if (!collectCallback(e)) return
-        
+
         val slot = e.rawSlot
         // playerInventory -> IO Panel
         if (slot > window.type.slotsContainer.last) {

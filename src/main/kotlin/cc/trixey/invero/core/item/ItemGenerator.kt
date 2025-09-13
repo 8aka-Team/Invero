@@ -1,6 +1,7 @@
 package cc.trixey.invero.core.item
 
-import cc.trixey.invero.common.message.componentAdventure
+import cc.trixey.invero.common.message.writeDisplayName
+import cc.trixey.invero.common.message.writeLore
 import cc.trixey.invero.core.Context
 import cc.trixey.invero.core.icon.IconElement
 import cc.trixey.invero.core.util.flatRelease
@@ -17,9 +18,13 @@ import org.bukkit.inventory.meta.ItemMeta
 import taboolib.common5.cbool
 import taboolib.common5.cint
 import taboolib.common5.cshort
-import taboolib.module.nms.*
+import taboolib.library.xseries.XEnchantment
+import taboolib.module.nms.ItemTag
+import taboolib.module.nms.MinecraftVersion
+import taboolib.module.nms.getItemTag
 import taboolib.platform.util.isAir
 import taboolib.platform.util.modifyMeta
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Invero
@@ -61,11 +66,11 @@ private fun ItemStack.generateProperties(
     return modifyMeta<ItemMeta> {
         // 显示名称
         frameBy { name }?.let { input ->
-            setDisplayNameComponent(context.parse(input).prefixColored.componentAdventure())
+            writeDisplayName(context.parse(input).prefixColored)
         }
         // 显示描述
         frameBy { lore }?.let { input ->
-            setLoreComponents(context.parse(input).loreColored(frame.enhancedLore).map { it.componentAdventure() })
+            writeLore(context.parse(input).loreColored(frame.enhancedLore))
         }
         // [属性] 数量
         frameBy { amount }?.let {
@@ -112,7 +117,8 @@ private fun ItemStack.generateProperties(
         }
         // [属性] 附魔
         frameBy { enchantments }?.forEach { (enchantment, level) ->
-            // TODO
+            val enchant = XEnchantment.of(enchantment).getOrNull()?.get()
+            if (enchant != null) this.enchants[enchant] = level
         }
     }.also { itemStack ->
         // [属性] NBT

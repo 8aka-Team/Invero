@@ -3,7 +3,7 @@ package cc.trixey.invero.core.compat.generator
 import cc.trixey.invero.common.sourceObject
 import cc.trixey.invero.core.compat.DefGeneratorProvider
 import cc.trixey.invero.core.geneartor.BaseGenerator
-import org.bukkit.Sound
+import taboolib.library.xseries.XSound
 
 /**
  * Invero
@@ -16,10 +16,11 @@ import org.bukkit.Sound
 class GeneratorSounds : BaseGenerator() {
 
     override fun generate() {
-        generated = Sound.values().map { sound ->
+        @Suppress("UnstableApiUsage")
+        generated = XSound.REGISTRY.mapIndexed { index, sound ->
             sourceObject {
                 put("name", sound.name())
-                put("ordinal", sound.ordinal())
+                put("ordinal", index)
             }
         }
     }
