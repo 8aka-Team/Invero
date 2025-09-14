@@ -40,7 +40,8 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
     var inventoryView: InventoryView? = null
         private set(value) {
             field = value
-            field?.title = inventoryTitle.toRawOrNot()
+            // TODO Bukkit API 的用法都不支持直接设置Json，所以，标题没办法用消息组件
+            //field?.title = inventoryTitle.toRawOrNot()
         }
 
     override val hidePlayerInventory: Boolean by lazy { window.hidePlayerInventory }
