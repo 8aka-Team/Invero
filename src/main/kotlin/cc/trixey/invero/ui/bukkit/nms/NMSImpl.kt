@@ -1,10 +1,12 @@
 package cc.trixey.invero.ui.bukkit.nms
 
+import cc.trixey.invero.common.message.toRawOrNot
 import cc.trixey.invero.ui.common.ContainerType
 import net.minecraft.server.v1_16_R3.*
 import net.minecraft.world.inventory.Containers
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.library.reflex.Reflex.Companion.getProperty
@@ -15,7 +17,6 @@ import taboolib.module.nms.MinecraftVersion.versionId
 import taboolib.module.nms.MinecraftVersion.versionId
 import taboolib.module.nms.sendBundlePacketBlocking
 import taboolib.module.nms.sendPacketBlocking
-import taboolib.module.ui.virtual.InventoryHandler
 
 /**
  * Invero
@@ -30,7 +31,7 @@ class NMSImpl : NMS {
     private val itemAir = null.asNMSCopy()
 
     override fun sendWindowOpen(player: Player, containerId: Int, type: ContainerType, rawTitle: String) {
-        val title = InventoryHandler.instance.parseToCraftChatMessage(rawTitle)
+        val title = CraftChatMessage.fromStringOrNull(rawTitle.toRawOrNot())
 
         val instance = PacketPlayOutOpenWindow::class.java.unsafeInstance()
 

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
+import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.function.submit
 import taboolib.common.platform.function.submitAsync
@@ -29,16 +30,18 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
     private var updateTask: BukkitExecutor.BukkitPlatformTask? = null
 
     val container: Inventory = if (containerType.isOrdinaryChest)
-        Bukkit.createInventory(Holder(window), containerType.containerSize, inventoryTitle.toRawOrNot())
+        Bukkit.createInventory(Holder(window), containerType.containerSize, inventoryTitle)
     else try {
-        Bukkit.createInventory(
-            Holder(window),
-            InventoryType.valueOf(containerType.bukkitType),
-            inventoryTitle.toRawOrNot()
-        )
+        Bukkit.createInventory(Holder(window), InventoryType.valueOf(containerType.bukkitType), inventoryTitle)
     } catch (_: Throwable) {
         error("Not supported inventory type (${containerType.bukkitType}) yet")
     }
+
+    var inventoryView: InventoryView? = null
+        private set(value) {
+            field = value
+            field?.title = inventoryTitle.toRawOrNot()
+        }
 
     override val hidePlayerInventory: Boolean by lazy { window.hidePlayerInventory }
 
@@ -150,7 +153,7 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
     override fun open() {
         val viewer = viewer ?: return
 
-        viewer.openInventory(container)
+        inventoryView = viewer.openInventory(container)
         containerId = handler.getContainerId(viewer)
         updatePlayerInventory()
 

@@ -40,10 +40,10 @@ fun ItemMeta.writeDisplayName(name: String) =
     }
 
 /**
- * 解析成 Json (提供跨版本支持)
+ * 解析成 Json (提供跨版本支持 1.12+)
  */
 fun String.toRawOrNot() =
-    if (MinecraftVersion.isUniversal) {
+    if (MinecraftVersion.isHigherOrEqual(MinecraftVersion.V1_12)) {
         componentAdventure().toRawMessage()
     } else {
         this

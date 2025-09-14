@@ -1,6 +1,5 @@
 package cc.trixey.invero.ui.bukkit
 
-import cc.trixey.invero.common.message.toRawOrNot
 import cc.trixey.invero.ui.bukkit.nms.handler
 import cc.trixey.invero.ui.bukkit.nms.persistContainerId
 import cc.trixey.invero.ui.common.event.ClickType
@@ -94,7 +93,7 @@ class InventoryPacket(override val window: BukkitWindow) : ProxyBukkitInventory 
                 FontImageWrapper.replaceFontImages(viewer, inventoryTitle)
             }.getOrNull() ?: inventoryTitle
 
-        handler.sendWindowOpen(viewer, persistContainerId, containerType, replaced.toRawOrNot())
+        handler.sendWindowOpen(viewer, persistContainerId, containerType, replaced)
 
         update()
 
