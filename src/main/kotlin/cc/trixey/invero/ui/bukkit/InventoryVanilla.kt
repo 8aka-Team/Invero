@@ -1,5 +1,6 @@
 package cc.trixey.invero.ui.bukkit
 
+import cc.trixey.invero.common.api.InveroSettings
 import cc.trixey.invero.common.message.toRawOrNot
 import cc.trixey.invero.ui.bukkit.api.isRegistered
 import cc.trixey.invero.ui.bukkit.nms.handler
@@ -40,8 +41,11 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
     var inventoryView: InventoryView? = null
         private set(value) {
             field = value
-            // TODO Bukkit API 的用法都不支持直接设置Json，所以，标题没办法用消息组件
-            //field?.title = inventoryTitle.toRawOrNot()
+            // Bukkit API 的用法都不支持直接设置Json
+            // 所以需要开启原始消息解析
+            if (InveroSettings.enableRawTitleInVanillaInventory) {
+                field?.title = inventoryTitle.toRawOrNot()
+            }
         }
 
     override val hidePlayerInventory: Boolean by lazy { window.hidePlayerInventory }
