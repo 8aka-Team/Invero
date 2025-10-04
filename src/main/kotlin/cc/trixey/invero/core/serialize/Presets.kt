@@ -14,6 +14,8 @@ internal val displayKeys = arrayOf(
     "amount", "count", "amt",
     "damage", "durability", "dur",
     "customModelData", "model",
+    // 1.21.2+ 新增物品模型组件
+    "itemModel", "item_model", "item-model",
     "color",
     "glow", "shiny",
     "enchantments", "enchantment", "enchant",
