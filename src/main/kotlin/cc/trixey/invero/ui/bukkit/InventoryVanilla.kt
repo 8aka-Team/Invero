@@ -209,10 +209,8 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
                 if (pos in it.area) {
                     val converted = e.clickType
                     if (it.runClickCallbacks(pos, converted, e)) {
-                        // 使用协程处理点击操作
-                        submitAsync {
-                            it.handleClick(pos - it.locate, converted, e)
-                        }
+                        // 同步处理点击操作，确保事件取消标记即时生效
+                        it.handleClick(pos - it.locate, converted, e)
                     }
                     return
                 }
@@ -231,13 +229,10 @@ class InventoryVanilla(override val window: BukkitWindow) : ProxyBukkitInventory
             .find {
                 e.rawSlots.all { slot -> window.scale.convertToPosition(slot) in it.area }
             }
-        // 传递给 Panel 处理
+        // 传递给 Panel 同步处理，确保 e.isCancelled
         if (handler != null) {
             val affected = e.rawSlots.map { window.scale.convertToPosition(it) }
-            // 使用协程处理拖拽操作
-            submitAsync {
-                handler.handleDrag(affected, e)
-            }
+            handler.handleDrag(affected, e)
         }
     }
 

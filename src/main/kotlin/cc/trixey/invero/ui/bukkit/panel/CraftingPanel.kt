@@ -88,15 +88,18 @@ class CraftingPanel(
     override fun handleDrag(pos: List<Pos>, e: InventoryDragEvent): Boolean {
         // locked slots
         if (pos.any { it.slot !in freeSlots }) return false
-        // unlocked
-        e.newItems.entries.forEachIndexed { index, entry ->
-            val itemStack = entry.value
-            val slot = pos[index].slot
-            set(slot, itemStack)
-        }
 
-        runCallback()
+        // 放行原生拖拽行为
         e.isCancelled = false
+
+        // 事件结束后统一回读 GUI 槽位，确保存储与界面一致
+        // 支持拖入与取出
+        submit {
+            (freeSlots + storage.keys).distinct().forEach {
+                inventory[locatingAbsoluteSlot(it)].storeAt(it)
+            }
+            runCallback()
+        }
         return true
     }
 
