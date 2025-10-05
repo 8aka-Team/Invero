@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 import taboolib.common5.cbool
+import org.bukkit.NamespacedKey
 import taboolib.common5.cint
 import taboolib.common5.cshort
 import taboolib.library.xseries.XEnchantment
@@ -85,6 +86,18 @@ private fun ItemStack.generateProperties(
         frameBy { customModelData }?.let {
             @Suppress("DEPRECATION")
             setCustomModelData(frame.staticCustomModelData ?: context.parse(it.content).cint)
+        }
+        // [属性] 物品模型 (1.21.2+)
+        if (MinecraftVersion.versionId >= 12102) {
+            frameBy { itemModel }?.let { raw ->
+                val modelId = (frame.staticItemModel ?: context.parse(raw).trim())
+                val key = modelId.ifBlank { null }?.let { NamespacedKey.fromString(it) }
+                try {
+                    this.itemModel = key
+                } catch (_: Throwable) {
+                    // 忽略低版本服务端或运行期不支持
+                }
+            }
         }
         // [属性] 是否发光
         frameBy { glow }?.let {

@@ -41,6 +41,8 @@ class Frame(
     var damage: JsonPrimitive?,
     @JsonNames("model")
     var customModelData: JsonPrimitive?,
+    @JsonNames("item_model", "item-model")
+    var itemModel: String?,
     var color: String?,
     @JsonNames("shiny")
     var glow: JsonPrimitive?,
@@ -72,6 +74,10 @@ class Frame(
 
     @Transient
     internal val staticCustomModelData = customModelData?.intOrNull
+
+    @Transient
+    internal val staticItemModel =
+        if (itemModel == null || itemModel!!.containsAnyPlaceholder) null else itemModel
 
     @Transient
     internal val staticGlow = glow?.booleanOrNull
@@ -124,6 +130,7 @@ class Frame(
         if (amount == null) amount = frame.amount
         if (damage == null) damage = frame.damage
         if (customModelData == null) customModelData = frame.customModelData
+        if (itemModel == null) itemModel = frame.itemModel
         if (color == null) color = frame.color
         if (glow == null) glow = frame.glow
         if (enchantments == null) enchantments = frame.enchantments
