@@ -118,6 +118,19 @@ private fun ItemStack.generateProperties(
                 isUnbreakable = true
             }
         }
+        // [属性] 隐藏物品信息框 (1.20.5+)
+        frameBy { hideTooltip }?.let {
+            val hide = frame.staticHideTooltip == true || context.parse(it.content).cbool
+            if (hide) {
+                if (MinecraftVersion.versionId >= 12005) {
+                    try {
+                        this.isHideTooltip = true
+                    } catch (_: Throwable) {
+                        // 忽略
+                    }
+                }
+            }
+        }
         // [属性] 物品标签
         frameBy { flags }?.forEach {
             val flag = ItemFlag.valueOf(it.replace(' ', '_').uppercase())

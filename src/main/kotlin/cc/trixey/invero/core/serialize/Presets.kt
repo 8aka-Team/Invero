@@ -17,6 +17,8 @@ internal val displayKeys = arrayOf(
     // 1.21.2+ 新增物品模型组件
     "itemModel", "item_model", "item-model",
     "color",
+    // 1.20.5+ 新增隐藏物品信息框组件
+    "hideTooltip", "hide_tooltip", "hide-tooltip",
     "glow", "shiny",
     "enchantments", "enchantment", "enchant",
     "flags", "flag",

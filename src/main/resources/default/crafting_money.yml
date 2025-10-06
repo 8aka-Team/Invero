@@ -60,11 +60,11 @@ items:
               sound BLOCK_ANVIL_USE by 0.7 0.9
               sleep 1.0s
               sound BLOCK_CHEST_LOCKED by 8 0.9
-              msg "&e金币铸造师&7: &f成功铸造 {{&amount}} &f枚&e金币"
+              msg color "&{#e09d00}金币铸造师&7: &f成功铸造 {{&amount}} &f枚&e金币"
               command "money give {{player name}} {{&amount}}" as console
             } else {
               sound ITEM_SHIELD_BREAK by 1 1
-               msg "&e金币铸造师&7: &c你这个不是金锭..."
+              msg color "&{#e09d00}金币铸造师&7: &c你这个不是金锭..."
             }
           }
     sub:
