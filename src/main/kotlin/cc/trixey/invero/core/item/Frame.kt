@@ -51,6 +51,8 @@ class Frame(
     @Serializable(with = ListStringSerializer::class)
     @JsonNames("flag")
     var flags: List<String>?,
+    @JsonNames("hide_tooltip", "hide-tooltip")
+    var hideTooltip: JsonPrimitive?,
     var unbreakable: JsonPrimitive?,
     var nbt: Map<String, JsonPrimitive>?,
     @Serializable(with = ListSlotSerializer::class)
@@ -81,6 +83,9 @@ class Frame(
 
     @Transient
     internal val staticGlow = glow?.booleanOrNull
+
+    @Transient
+    internal val staticHideTooltip = hideTooltip?.booleanOrNull
 
     @Transient
     internal val staticUnbreakable = unbreakable?.booleanOrNull
@@ -133,6 +138,7 @@ class Frame(
         if (itemModel == null) itemModel = frame.itemModel
         if (color == null) color = frame.color
         if (glow == null) glow = frame.glow
+        if (hideTooltip == null) hideTooltip = frame.hideTooltip
         if (enchantments == null) enchantments = frame.enchantments
         if (flags == null) flags = frame.flags
         if (unbreakable == null) unbreakable = frame.unbreakable
