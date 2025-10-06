@@ -1,6 +1,6 @@
 package cc.trixey.invero.ui.bukkit.nms
 
-import cc.trixey.invero.common.message.toRawOrNot
+import cc.trixey.invero.common.message.Message
 import cc.trixey.invero.ui.common.ContainerType
 import net.minecraft.server.v1_16_R3.*
 import net.minecraft.world.inventory.Containers
@@ -13,7 +13,6 @@ import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.library.reflex.Reflex.Companion.unsafeInstance
 import taboolib.module.nms.MinecraftVersion.isUniversal
-import taboolib.module.nms.MinecraftVersion.versionId
 import taboolib.module.nms.MinecraftVersion.versionId
 import taboolib.module.nms.sendBundlePacketBlocking
 import taboolib.module.nms.sendPacketBlocking
@@ -31,7 +30,16 @@ class NMSImpl : NMS {
     private val itemAir = null.asNMSCopy()
 
     override fun sendWindowOpen(player: Player, containerId: Int, type: ContainerType, rawTitle: String) {
-        val title = CraftChatMessage.fromStringOrNull(rawTitle.toRawOrNot())
+        // 先将标题解析为 Adventure 组件，再序列化为 JSON
+        // 交给 NMS 的 fromJSON 渲染，避免把 JSON 当作普通文本显示
+        val title = runCatching {
+            val component = Message.parseAdventure(rawTitle)
+            val json = Message.transformToJson(component)
+            CraftChatMessage.fromJSON(json)
+        }.getOrElse {
+            // 回退到传统解析，确保兼容极端输入
+            CraftChatMessage.fromStringOrNull(rawTitle)
+        }
 
         val instance = PacketPlayOutOpenWindow::class.java.unsafeInstance()
 
