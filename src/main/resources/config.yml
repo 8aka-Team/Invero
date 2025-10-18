@@ -4,7 +4,7 @@ Kether:
 
 # 工作空间
 Workspaces:
-  # 是否启用文件监听(自动重载)
+  # 是否启用文件监听（自动重载） | file monitoring (automatic reload)
   file-listener: true
   # 匹配文件名加载（正则表达式） | filter file name
   filter: '^(?![#!]).*\.(?i)(conf|hocon|yaml|yml|toml|json)$'
@@ -32,7 +32,7 @@ Menu:
   # 允许在 Vanilla Inventory 中使用 Raw Title
   # 详见 https://github.com/TabooLib/taboolib/blob/dev/6.2.3/module/bukkit/bukkit-ui/src/main/kotlin/taboolib/module/ui/MenuBuilder.kt#L40
   enable-raw-title-in-vanilla-inventory: false
-  
+
   # 默认物品名称颜色 | default item name color
   default-name-color: "§7"
   # 默认物品描述颜色 | default item lore color
