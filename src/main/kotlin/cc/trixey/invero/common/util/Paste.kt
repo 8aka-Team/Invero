@@ -1,18 +1,9 @@
 package  cc.trixey.invero.common.util
 
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
-import taboolib.common.platform.function.info
 import taboolib.common.platform.function.warning
-import taboolib.common5.FileWatcher
-import taboolib.common5.cbool
-import taboolib.library.configuration.ConfigurationSection
-import taboolib.module.configuration.Configuration
-import taboolib.module.configuration.Type
 import taboolib.module.configuration.Config
-import taboolib.module.configuration.ConfigNode
-import java.io.File
+import taboolib.module.configuration.Configuration
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
@@ -36,10 +27,6 @@ object PasteConfig {
     private var serviceType = "pastegg"
     private val serviceConfigs = ConcurrentHashMap<String, Map<String, String>>()
 
-    init {
-        loadConfig()
-    }
-
     fun loadConfig() {
         try {
             // 检查配置是否存在paste部分，如果不存在则添加默认配置
@@ -51,9 +38,9 @@ object PasteConfig {
                 config["Paste.services.pastebin.dev-key"] = "PD5qZ5fXHr-rG4Xpl-nM-BDXmkUod_C8"
                 config.saveToFile()
             }
-            
+
             serviceType = config.getString("Paste.service-type", "pastegg") ?: "pastegg"
-            
+
             val servicesSection = config.getConfigurationSection("Paste.services")
             if (servicesSection != null) {
                 for (key in servicesSection.getKeys(false)) {
@@ -61,8 +48,8 @@ object PasteConfig {
                     if (serviceSection != null) {
                         val configMap = mutableMapOf<String, String>()
                         for (configKey in serviceSection.getKeys(false)) {
-                            serviceSection.getString(configKey)?.let { 
-                                configMap[configKey] = it 
+                            serviceSection.getString(configKey)?.let {
+                                configMap[configKey] = it
                             }
                         }
                         serviceConfigs[key] = configMap
@@ -74,15 +61,21 @@ object PasteConfig {
             e.printStackTrace()
         }
     }
-    
+
     fun getServiceType(): String = serviceType
-    
+
     fun getServiceConfig(service: String): Map<String, String> = serviceConfigs[service] ?: emptyMap()
 }
 
 // 剪贴板服务接口
 interface PasteService {
-    fun paste(name: String, description: String, content: List<PasteContent>, expiresIn: Long = -1, timeUnit: TimeUnit = TimeUnit.MINUTES): PasteResult
+    fun paste(
+        name: String,
+        description: String,
+        content: List<PasteContent>,
+        expiresIn: Long = -1,
+        timeUnit: TimeUnit = TimeUnit.MINUTES
+    ): PasteResult
 }
 
 // 工厂类创建具体的剪贴板服务实例
@@ -101,8 +94,14 @@ class PasteGGService : PasteService {
     private val isoInstant = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private val config = PasteConfig.getServiceConfig("pastegg")
     private val baseUrl = config["base-url"] ?: "https://api.paste.gg/v1"
-    
-    override fun paste(name: String, description: String, content: List<PasteContent>, expiresIn: Long, timeUnit: TimeUnit): PasteResult {
+
+    override fun paste(
+        name: String,
+        description: String,
+        content: List<PasteContent>,
+        expiresIn: Long,
+        timeUnit: TimeUnit
+    ): PasteResult {
         val jsonInput = buildJsonObject {
             put("name", name)
             put("description", description)
@@ -139,7 +138,11 @@ class PasteGGService : PasteService {
             val status = PasteResult.Status.valueOf(this["status"]!!.jsonPrimitive.content.uppercase())
             val result = this["result"]?.jsonObject
 
-            return PasteResult(status, result, "https://paste.gg/p/anonymous/${result?.get("id")?.jsonPrimitive?.content}")
+            return PasteResult(
+                status,
+                result,
+                "https://paste.gg/p/anonymous/${result?.get("id")?.jsonPrimitive?.content}"
+            )
         }
     }
 }
@@ -148,28 +151,34 @@ class PasteGGService : PasteService {
 class LuckoPasteService : PasteService {
     private val config = PasteConfig.getServiceConfig("lucko")
     private val baseUrl = config["base-url"] ?: "https://api.pastes.dev"
-    
-    override fun paste(name: String, description: String, content: List<PasteContent>, expiresIn: Long, timeUnit: TimeUnit): PasteResult {
+
+    override fun paste(
+        name: String,
+        description: String,
+        content: List<PasteContent>,
+        expiresIn: Long,
+        timeUnit: TimeUnit
+    ): PasteResult {
         if (content.isEmpty()) {
             return PasteResult(PasteResult.Status.ERROR, null, "No content provided")
         }
-        
+
         // Lucko paste API 比较简单，只需要发送内容即可
         val firstContent = content.first()
         val contentToSend = firstContent.value
-        
+
         val url = URL("$baseUrl/post")
         val conn = url.openConnection() as HttpURLConnection
         conn.requestMethod = "POST"
         conn.doOutput = true
-        
+
         // 设置语言标记
         if (firstContent.highlightLanguage != null) {
             conn.setRequestProperty("Content-Type", "text/${firstContent.highlightLanguage}")
         } else {
             conn.setRequestProperty("Content-Type", "text/plain")
         }
-        
+
         conn.setRequestProperty("User-Agent", "Invero/1.0")
         conn.outputStream.write(contentToSend.toByteArray(StandardCharsets.UTF_8))
 
@@ -178,7 +187,7 @@ class LuckoPasteService : PasteService {
         if (responseCode != HttpURLConnection.HTTP_OK && responseCode != HttpURLConnection.HTTP_CREATED) {
             return PasteResult(PasteResult.Status.ERROR, null, "HTTP Error: $responseCode")
         }
-        
+
         // 从 Location 头获取文档 ID
         val location = conn.getHeaderField("Location")
         val key = location?.substringAfterLast("/") ?: run {
@@ -190,13 +199,13 @@ class LuckoPasteService : PasteService {
                 null
             }
         }
-        
+
         if (key == null) {
             return PasteResult(PasteResult.Status.ERROR, null, "Failed to get paste key")
         }
-        
+
         return PasteResult(
-            PasteResult.Status.SUCCESS, 
+            PasteResult.Status.SUCCESS,
             buildJsonObject { put("id", key) }.jsonObject,
             "https://pastes.dev/$key"
         )
@@ -208,12 +217,18 @@ class PastebinService : PasteService {
     private val config = PasteConfig.getServiceConfig("pastebin")
     private val baseUrl = config["base-url"] ?: "https://pastebin.com/api/api_post.php"
     private val devKey = config["dev-key"] ?: ""
-    
-    override fun paste(name: String, description: String, content: List<PasteContent>, expiresIn: Long, timeUnit: TimeUnit): PasteResult {
+
+    override fun paste(
+        name: String,
+        description: String,
+        content: List<PasteContent>,
+        expiresIn: Long,
+        timeUnit: TimeUnit
+    ): PasteResult {
         if (content.isEmpty()) {
             return PasteResult(PasteResult.Status.ERROR, null, "No content provided")
         }
-        
+
         // 准备参数
         val firstContent = content.first()
         val expireDate = when {
@@ -226,7 +241,7 @@ class PastebinService : PasteService {
             timeUnit.toDays(expiresIn) <= 30 -> "1M" // 1月
             else -> "1M" // 默认1月
         }
-        
+
         // 转换语言格式
         val format = when (firstContent.highlightLanguage) {
             "bash" -> "bash"
@@ -248,7 +263,7 @@ class PastebinService : PasteService {
             "yaml", "yml" -> "yaml"
             else -> "text"
         }
-        
+
         // 构建请求参数
         val params = mapOf(
             "api_option" to "paste",
@@ -259,28 +274,28 @@ class PastebinService : PasteService {
             "api_paste_private" to "1", // Unlisted
             "api_paste_expire_date" to expireDate
         )
-        
+
         // 发送请求
         val url = URL(baseUrl)
         val conn = url.openConnection() as HttpURLConnection
         conn.requestMethod = "POST"
         conn.doOutput = true
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
-        
-        val data = params.entries.joinToString("&") { (key, value) -> 
-            "$key=${java.net.URLEncoder.encode(value, "UTF-8")}" 
+
+        val data = params.entries.joinToString("&") { (key, value) ->
+            "$key=${java.net.URLEncoder.encode(value, "UTF-8")}"
         }
-        
+
         conn.outputStream.write(data.toByteArray(StandardCharsets.UTF_8))
-        
+
         // 检查响应
         val responseCode = conn.responseCode
         if (responseCode != HttpURLConnection.HTTP_OK) {
             return PasteResult(PasteResult.Status.ERROR, null, "HTTP Error: $responseCode")
         }
-        
+
         val response = conn.inputStream.reader().readText().trim()
-        
+
         // 检查是否获取了URL
         return if (response.startsWith("https://pastebin.com/")) {
             val pasteId = response.substringAfterLast("/")
