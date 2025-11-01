@@ -12,7 +12,7 @@ plugins {
 taboolib {
 
     version {
-        taboolib = "6.2.3-664550e"
+        taboolib = "6.2.3-d4a5f0ea"
     }
 
     env {
